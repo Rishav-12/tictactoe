@@ -78,7 +78,7 @@ def game():
             elif player == 'O':
                 player = 'X'
         
-        print("Do you want to play again? (y/n)")
+        print("Do you want to play again? [Y]es No[Any Button]")
         ans = input().lower()
         if ans == 'y':
             continue
