@@ -1,9 +1,10 @@
 # TicTacToe
-Play tic-tac-toe on the command line
+Play tic-tac-toe on the command line or in a User Interface
 
 ### Description
 * Multiplayer game
-* Command line interface
+* Both CLI and GUI formats available
 
 ### How to use
-The game follows the basic Tic-Tac-Toe rules. Just follow the on-screen instructions.
+1. The game follows the basic Tic-Tac-Toe rules. Just follow the on-screen instructions.
+2. Now, you can also play the game on a simple Graphical Tkinter window.
