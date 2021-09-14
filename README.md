@@ -1,5 +1,5 @@
 # TicTacToe
-Play tic-tac-toe on the command line or in a User Interface
+Play super awesome tic-tac-toe
 
 ### Description
 * Multiplayer game
