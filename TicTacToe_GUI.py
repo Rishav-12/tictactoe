@@ -1,8 +1,12 @@
-from tkinter import *
-from tkinter import messagebox
+from tkinter import Tk, Button, Label, NORMAL, DISABLED, messagebox
 
 root = Tk()
 root.title("Rishav's TIC-TAC-TOE")
+
+class TicTacToeButton(Button):
+	def __init__(self, idx):
+		self.idx = idx
+		self.button = Button(root, text = " ", height = 5, width = 14, command = lambda: make_move(self.button))
 
 def make_move(b):
 	global player, moves, flag
@@ -17,12 +21,13 @@ def make_move(b):
 			info_2['text'] = f"{player} wins"
 		else:
 			moves += 1
-		
+
 			if moves == 9: # If 9 moves have been played, declare a TIE
 				info['text'] = "Game Over"
 				info_2['text'] = "Tied"
 				messagebox.showinfo("TIE", "You tied the game!\nPlay another...")
-				configure_buttons([])
+				# configure_buttons([])
+				reset_game()
 			else: # If game is not over, just switch the tokens
 				if player == 'X':
 					player = 'O'
@@ -35,71 +40,56 @@ def check_win(player):
 	global flag
 
 	# Various conditions for a win to occur
-	if (b1['text'] == b2['text'] == b3['text'] == player):
-		configure_buttons([b1, b2, b3])
-		flag = 1
-
-	elif (b4['text'] == b5['text'] == b6['text'] == player):
-		configure_buttons([b4, b5, b6])
-		flag = 1
-
-	elif (b7['text'] == b8['text'] == b9['text'] == player):
-		configure_buttons([b7, b8, b9])
-		flag = 1
-
-	elif (b1['text'] == b4['text'] == b7['text'] == player):
-		configure_buttons([b1, b4, b7])
-		flag = 1
-
-	elif (b2['text'] == b5['text'] == b8['text'] == player):
-		configure_buttons([b2, b5, b8])
-		flag = 1
-
-	elif (b3['text'] == b6['text'] == b9['text'] == player):
-		configure_buttons([b3, b6, b9])
-		flag = 1
-
-	elif (b1['text'] == b5['text'] == b9['text'] == player):
-		configure_buttons([b1, b5, b9])
-		flag = 1
-
-	elif (b3['text'] == b5['text'] == b7['text'] == player):
-		configure_buttons([b3, b5, b7])
-		flag = 1
+	win_conditions = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]]
+	for c in win_conditions:
+		x, y, z = c
+		if (list_buttons[x].button['text'] == list_buttons[y].button['text'] == list_buttons[z].button['text'] == player):
+			configure_buttons([list_buttons[x].button, list_buttons[y].button, list_buttons[z].button])
+			flag = 1
+			break
 
 def configure_buttons(buttons):
 	for b in buttons:
 		b.config(bg = "lightgreen") # Mark the line where the win has occured
 
 	# Disable all buttons
-	b1.config(state = DISABLED)
-	b2.config(state = DISABLED)
-	b3.config(state = DISABLED)
+	for button in list_buttons:
+		button.button.config(state = DISABLED)
 
-	b4.config(state = DISABLED)
-	b5.config(state = DISABLED)
-	b6.config(state = DISABLED)
-
-	b7.config(state = DISABLED)
-	b8.config(state = DISABLED)
-	b9.config(state = DISABLED)
+def reset_game():
+	global player, moves, flag
+	for button in list_buttons:
+		button.button['text'] = " "
+		button.button.config(state = NORMAL, bg = btn_default_color)
+	player = 'X'
+	moves = 0
+	flag = 0
+	info['text'] = f"Move: {player}"
+	info_2['text'] = "Running..."
 
 global player, moves, flag
 player = 'X'
 moves = flag = 0
 
 # Setting up the buttons and labels
-b1 = Button(root, text = " ", height = 5, width = 14, command = lambda: make_move(b1))
-b2 = Button(root, text = " ", height = 5, width = 14, command = lambda: make_move(b2))
-b3 = Button(root, text = " ", height = 5, width = 14, command = lambda: make_move(b3))
+list_buttons = []
+for i in range(1, 10):
+	button = TicTacToeButton(idx = i)
+	if 1 <= i <= 3:
+		row = 0
+	if 4 <= i <= 6:
+		row = 1
+	if 7 <= i <= 9:
+		row = 2
+	if i == 1 or i == 4 or i == 7:
+		column = 0
+	if i == 2 or i == 5 or i == 8:
+		column = 1
+	if i == 3 or i == 6 or i == 9:
+		column = 2
 
-b4 = Button(root, text = " ", height = 5, width = 14, command = lambda: make_move(b4))
-b5 = Button(root, text = " ", height = 5, width = 14, command = lambda: make_move(b5))
-b6 = Button(root, text = " ", height = 5, width = 14, command = lambda: make_move(b6))
-
-b7 = Button(root, text = " ", height = 5, width = 14, command = lambda: make_move(b7))
-b8 = Button(root, text = " ", height = 5, width = 14, command = lambda: make_move(b8))
-b9 = Button(root, text = " ", height = 5, width = 14, command = lambda: make_move(b9))
+	list_buttons.append(button)
+	button.button.grid(row = row, column = column)
 
 info = Label(root, text = f"Move: {player}")
 info.grid(row = 3, column = 0)
@@ -107,16 +97,8 @@ info.grid(row = 3, column = 0)
 info_2 = Label(root, text = "Running...")
 info_2.grid(row = 3, column = 2)
 
-b1.grid(row = 0, column = 0)
-b2.grid(row = 0, column = 1)
-b3.grid(row = 0, column = 2)
-
-b4.grid(row = 1, column = 0)
-b5.grid(row = 1, column = 1)
-b6.grid(row = 1, column = 2)
-
-b7.grid(row = 2, column = 0)
-b8.grid(row = 2, column = 1)
-b9.grid(row = 2, column = 2)
+reset_btn = Button(root, text = "Reset Game", height = 2, width = 12, command = reset_game)
+reset_btn.grid(row = 4)
+btn_default_color = reset_btn.cget("background")
 
 root.mainloop()
