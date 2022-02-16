@@ -29,24 +29,24 @@ def game():
     running = True
     valid_positions = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     while running:
-        
+
         board = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
         ans = ''
         total_moves = 0
-        
+
         print("1|2|3")
         print("-+-+-")
         print("4|5|6")
         print("-+-+-")
         print("7|8|9")
-        
+
         print("\nLet's play. X goes first.\n")
-        
+
         player = 'X'
-        
+
         while True:
             user_input = input(f"Player ({player}) choose your position: (1-9): ")
-            
+
             if user_input.isdigit():
                 pos = int(user_input)
             else:
@@ -55,7 +55,7 @@ def game():
             if pos not in valid_positions:
                 print("Please enter a valid position (1-9)")
                 continue
-            
+
             if available(pos-1, board): #Check if the desired position is available
                 board[pos-1] = player
                 showBoard(board) #Display the board after every valid move
@@ -71,13 +71,13 @@ def game():
             else:
                 print("Position is already occupied")
                 continue
-            
+
             # Switching the players
             if player == 'X':
                 player = 'O'
             elif player == 'O':
                 player = 'X'
-        
+
         print("Do you want to play again? [Y]es No[Any Button]")
         ans = input().lower()
         if ans == 'y':
