@@ -1,3 +1,6 @@
+from rich import print as rprint
+from rich.prompt import Prompt
+
 def available(pos, board):
     if board[pos] == ' ':
         return True
@@ -40,7 +43,7 @@ def game():
         print("-+-+-")
         print("7|8|9")
 
-        print("\nLet's play. X goes first.\n")
+        rprint("\n:rocket: Let's play. X goes first.\n")
 
         player = 'X'
 
@@ -50,26 +53,26 @@ def game():
             if user_input.isdigit():
                 pos = int(user_input)
             else:
-                print("Please enter a valid position")
+                rprint("[bold red]Please enter a valid position[/bold red]")
                 continue
             if pos not in valid_positions:
-                print("Please enter a valid position (1-9)")
+                rprint("[bold red]Please enter a valid position (1-9)[/bold red]")
                 continue
 
             if available(pos-1, board): #Check if the desired position is available
                 board[pos-1] = player
                 showBoard(board) #Display the board after every valid move
                 if check_win(board): #Check if the current player has won
-                    print("\nGame Over")
-                    print(f"***Player ({player}) wins.***")
+                    rprint("\n[bold green]Game Over[/bold green]")
+                    rprint(f"[bold]Player ({player}) wins.[/bold]")
                     break
                 total_moves += 1
                 if total_moves == 9: #If all 9 squares are covered, it's a tie
-                    print("\nGame Over")
-                    print("***Tie***")
+                    rprint("\n[bold green]Game Over[/bold green]")
+                    rprint("[bold]Tie[/bold]")
                     break
             else:
-                print("Position is already occupied")
+                rprint("[bold red]Position is already occupied[/bold red]")
                 continue
 
             # Switching the players
@@ -78,9 +81,9 @@ def game():
             elif player == 'O':
                 player = 'X'
 
-        print("Do you want to play again? [Y]es No[Any Button]")
-        ans = input().lower()
-        if ans == 'y':
+        play_again = Prompt.ask("Do you want to play again?", choices=["y", "n"], default="y", show_default=False)
+
+        if play_again == 'y':
             continue
         else:
             running = False
